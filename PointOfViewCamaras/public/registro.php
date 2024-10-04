@@ -22,10 +22,10 @@
             $telefono = $_POST['telefono'];
             $contraseña = $_POST['contraseña'];
 
-            $sql = "INSERT INTO usuarios (nombreUsuario, apellidos, email,direccion,telefono, contrasena, rol) VALUES ('$nombre','$apellidos', '$email','$direccion','$telefono', '$contraseña', 'CLI')";
+            $sql = "INSERT INTO usuarios (nombreUsuario, apellidos, email,direccion,telefono, contrasena) VALUES ('$nombre','$apellidos', '$email','$direccion','$telefono', '$contraseña')";
         
             if ($conn->query($sql) === TRUE) {
-                echo "Nuevo usuario creado";
+                header("Location: login.php");
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
