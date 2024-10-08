@@ -108,4 +108,6 @@ INSERT INTO ROL VALUES ('','Administrador'),('','Cliente');
 
 INSERT INTO USUARIOS VALUES ('','Administrador','1', 'admin1@gmail.com', '', '', 'admin1', '2', ''),('','Administrador','2', 'admin2@gmail.com', '', '', 'admin2', '2', '');
 
+INSERT INTO CATEGORIA VALUES ('','Cámaras'),('','Accesorios');
 
+INSERT INTO PRODUCTO VALUES('','EOS R8','CANON', 'Cámara Mirrorless Body', 'Conectividad: Wi-Fi y Bluetooth para transferencia de imágenes y disparo remoto desde tu smartphone o tablet.','1',1400,2,'../assets/images/1.jpg')
