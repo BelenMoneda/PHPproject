@@ -29,8 +29,8 @@
                 $telefono = $row["telefono"];
                 $contrasena = $row["contrasena"];
                 $idRol = $row["idRol"];
-                $metodoPago = $row["metodoPago"];                
-
+                $metodoPago = $row["metodoPago"];  
+                
                 if($emailUsuario == $email && $contrasena == $contraseñaUsuario)
                 {
                     
@@ -43,7 +43,13 @@
                     $_SESSION['telefono'] = $telefono;
                     $_SESSION['idRol'] = $idRol;
                     $_SESSION['metodoPago'] = $metodoPago;
-                    header('Location: login-succes.php');
+
+                    if ($idRol == 1) {
+                        header('Location: ../admin/zona-admin.php');
+                    }
+                    else {
+                        header('Location: index.php');
+                    }
 
                 }
                 else

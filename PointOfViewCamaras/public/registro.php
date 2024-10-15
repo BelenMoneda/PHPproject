@@ -22,7 +22,7 @@
             $telefono = $_POST['telefono'];
             $contraseña = $_POST['contraseña'];
 
-            $sql = "INSERT INTO usuarios (nombreUsuario, apellidos, email,direccion,telefono, contrasena) VALUES ('$nombre','$apellidos', '$email','$direccion','$telefono', '$contraseña')";
+            $sql = "INSERT INTO usuarios (nombreUsuario, apellidos, email,direccion,telefono, contrasena,idRol) VALUES ('$nombre','$apellidos', '$email','$direccion','$telefono', '$contraseña','2')";
         
             if ($conn->query($sql) === TRUE) {
                 header("Location: login.php");

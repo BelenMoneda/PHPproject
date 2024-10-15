@@ -48,7 +48,6 @@
             <li><a href="detalle_producto.php">Productos</a></li>
         </ul>
     </nav>
-    <h1></h1>
     <div>
         <img src="<?php echo $imagen ?>" alt="imagen">
         <p>Nombre: <?php echo $nombreProducto ?></p>
