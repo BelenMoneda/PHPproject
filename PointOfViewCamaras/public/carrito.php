@@ -73,7 +73,6 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Agrega tu archivo CSS -->
 </head>
 <body>
     <h1>Mi Carrito de Compras</h1>

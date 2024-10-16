@@ -77,3 +77,4 @@ $conn->close();
                     <?php echo htmlspecialchars($row['nombreMetodoPago']); ?>
                 </option>
             <?php endwhile;
+        

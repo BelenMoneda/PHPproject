@@ -104,6 +104,10 @@ CREATE TABLE Pago (
   FOREIGN KEY (idMetodoPago) REFERENCES MetodoPago(idMetodoPago)
 );
 
+
+
+INSERT INTO MetodoPago (nombreMetodoPago) VALUES ('Tarjeta de Crédito'), ('Tarjeta de Débito'), ('PayPal'), ('Transferencia Bancaria');
+
 INSERT INTO ROL VALUES ('','Administrador'),('','Cliente');
 
 INSERT INTO USUARIOS VALUES ('','Administrador','1', 'admin1@gmail.com', '', '', 'admin1', '1', ''),('','Administrador','2', 'admin2@gmail.com', '', '', 'admin2', '1', '');
@@ -112,7 +116,7 @@ INSERT INTO CATEGORIA VALUES ('','Cámaras'),('','Accesorios');
 
 INSERT INTO PRODUCTO (idProducto, nombreProducto, marca, modelo, descripcion, idCategoria, precioUnitario, stock, imagen) VALUES
 ('','EOS R8','CANON', 'Cámara Mirrorless Body', 'Conectividad: Wi-Fi y Bluetooth para transferencia de imágenes y disparo remoto desde tu smartphone o tablet.','1',1400,2,'../assets/images/1.jpg'),
-('','EOS R6','CANON', 'Cámara Mirrorless Full-Frame', 'Estabilización de imagen en el cuerpo, sensor CMOS de 20 MP, video 4K UHD.', '1', 2500, 3, '../assets/images/1.jpg'),
+('','EOS R6','CANON', 'Cámara Mirrorless Full-Frame', 'Estabilización de imagen en el cuerpo, sensor CMOS de 20 MP, video 4K UHD.', '1', 2500, 3, '../assets/images/productos/1.jpg'),
 ('','Alpha 7 IV','SONY', 'Cámara Mirrorless Full-Frame', 'Sensor Exmor R CMOS de 33 MP, procesador BIONZ XR, video 4K 60p.', '1', 2800, 4, '../assets/images/1.jpg'),
 ('','Z6 II','NIKON', 'Cámara Mirrorless Full-Frame', 'Sensor CMOS de 24.5 MP, Dual EXPEED 6, 4K UHD.', '1', 2000, 5, '../assets/images/1.jpg'),
 ('','Lumix S5','PANASONIC', 'Cámara Mirrorless Full-Frame', '24 MP, grabación de video 4K, diseño compacto y ligero.', '1', 1700, 6, '../assets/images/1.jpg'),

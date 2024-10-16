@@ -40,14 +40,8 @@
     <title>Detalle_producto</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.php">Inicio</a></li>
-            <li><a href="registro.php">Registrarse</a></li>
-            <li><a href="login.php">Login</a></li>
-            <li><a href="detalle_producto.php">Productos</a></li>
-        </ul>
-    </nav>
+    <?php include '../includes/header.php'; ?>
+
     <div>
         <img src="<?php echo $imagen ?>" alt="imagen">
         <p>Nombre: <?php echo $nombreProducto ?></p>
