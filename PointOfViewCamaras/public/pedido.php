@@ -40,52 +40,6 @@ foreach ($_SESSION['carrito'] as $producto) {
     $total += $producto['cantidad'] * $producto['precioUnitario'];
 }
 
-// Insertar el pedido en la base de datos
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $estadoPedido = 'Pendiente';
-    $fechaPedido = date('Y-m-d');
-
-    // Insertar en tabla Pedido
-    $sqlPedido = "INSERT INTO PEDIDO (nombreUsuario, apellidos, email, direccion, precioTotal, estadoPedido, fechaPedido, idUsuario) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmtPedido = $conn->prepare($sqlPedido);
-    $stmtPedido->bind_param(
-        "ssssdssi", 
-        $usuario['nombreUsuario'], 
-        $usuario['apellidos'], 
-        $usuario['email'], 
-        $usuario['direccion'], 
-        $total, 
-        $estadoPedido, 
-        $fechaPedido, 
-        $idUsuario
-    );
-    $stmtPedido->execute();
-    $idPedido = $stmtPedido->insert_id;  // Obtener el ID del pedido recién insertado
-    $stmtPedido->close();
-
-    // Insertar cada línea del pedido (productos en la tabla LINEA_PEDIDO)
-    foreach ($_SESSION['carrito'] as $producto) {
-        $cantidad = $producto['cantidad'];
-        $precioUnitario = $producto['precioUnitario'];
-        $subtotal = $cantidad * $precioUnitario;
-        $idProducto = $producto['idProducto'];
-
-        $sqlLineaPedido = "INSERT INTO LINEA_PEDIDO (cantidad, precioUnitario, idPedido, idProducto, subtotal) 
-                           VALUES (?, ?, ?, ?, ?)";
-        $stmtLineaPedido = $conn->prepare($sqlLineaPedido);
-        $stmtLineaPedido->bind_param("idiii", $cantidad, $precioUnitario, $idPedido, $idProducto, $subtotal);
-        $stmtLineaPedido->execute();
-        $stmtLineaPedido->close();
-    }
-
-    // Vaciar el carrito después de confirmar el pedido
-    unset($_SESSION['carrito']);
-
-    // Redirigir a la página de pago
-    header("Location: pago.php?idPedido=" . $idPedido);
-    exit();
-}
 
 $conn->close();
 ?>

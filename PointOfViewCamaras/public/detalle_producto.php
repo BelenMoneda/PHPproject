@@ -1,9 +1,9 @@
 <!-- las imagenes, mostraremos la marca junto con el nombre de producto, id de producto pequeño debajo,  modelo, el precio, un texto con la descripcion, stok disponible y un boton de añadir el producto al carrito  -->
 
 <?php
-    if(isset($_GET['idProducto']))
+    if(isset($_POST['idProducto']))
     {
-        $productoConsultado = $_GET['idProducto'];
+        $productoConsultado = $_POST['idProducto'];
         $servername = "localhost";
         $username = "root";
         $password = "";

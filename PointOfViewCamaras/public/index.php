@@ -39,7 +39,7 @@ if (isset($_GET['nombre']) && $_GET['nombre'] != '') {
     $whereClauses[] = "P.nombreProducto LIKE '%$nombre%'";
 }
 
-$sql = "SELECT P.nombreProducto, P.descripcion, P.precioUnitario, P.imagen, P.stock, C.nombreCategoria 
+$sql = "SELECT  P.idProducto, P.nombreProducto, P.descripcion, P.precioUnitario, P.imagen, P.stock, C.nombreCategoria 
         FROM PRODUCTO P
         JOIN CATEGORIA C ON P.idCategoria = C.idCategoria";
 
@@ -100,6 +100,10 @@ $result = $conn->query($sql);
                 echo "<p>Precio: $" . $row['precioUnitario'] . "</p>";
                 echo "<p>Stock: " . $row['stock'] . "</p>";
                 echo "<p>Categoría: " . $row['nombreCategoria'] . "</p>";
+                echo "<form method='POST' action='detalle_producto.php'>";
+                echo "<input type='hidden' name='idProducto' value='" . $row['idProducto'] . "'>";
+                echo "<button type='submit'>Ver detalles</button>";
+                echo "</form>";
                 echo "</div>";
             }
         } else {
