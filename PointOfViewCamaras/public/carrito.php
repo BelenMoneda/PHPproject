@@ -1,72 +1,81 @@
 <?php
-session_start();
+session_start(); // Iniciar la sesión para gestionar el carrito
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['idUsuario'])) {
-    header("Location: login.php");  // Redirigir a la página de login si no ha iniciado sesión
-    exit();
-}
-
-// Conexión a la base de datos
+// Conectar a la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "povcamaras";  
+$dbname = "povcamaras";
 $conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar la conexión
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Inicializar el carrito si no está creado
+// Inicializamos el carrito si no existe
 if (!isset($_SESSION['carrito'])) {
-    $_SESSION['carrito'] = [];
+    $_SESSION['carrito'] = array();
 }
 
-// Agregar producto al carrito
-if (isset($_POST["idProducto"]) && isset($_POST["nombreProducto"]) && isset($_POST["precioUnitario"]) && isset($_POST["stock"])) {
-    $idProducto = $_POST["idProducto"];
-    $nombreProducto = $_POST["nombreProducto"];
-    $precioUnitario = $_POST["precioUnitario"];
-    $cantidad = isset($_POST["cantidad"]) ? (int)$_POST["cantidad"] : 1;
-
-    // Buscar si el producto ya está en el carrito
-    $producto_encontrado = false;
-    foreach ($_SESSION['carrito'] as &$producto) {
-        if ($producto['idProducto'] == $idProducto) {
-            $producto['cantidad'] += $cantidad;  // Aumentar la cantidad si ya está en el carrito
-            $producto_encontrado = true;
-            break;
+// Función para encontrar un producto en el carrito por su ID
+function encontrarProductoEnCarrito($idProducto) {
+    foreach ($_SESSION['carrito'] as $key => $item) {
+        if ($item['idProducto'] == $idProducto) {
+            return $key;
         }
     }
+    return false;
+}
 
-    // Si no se encontró, agregarlo al carrito
-    if (!$producto_encontrado) {
-        $_SESSION['carrito'][] = [
+// Acción para agregar productos al carrito
+if (isset($_POST['agregar'])) {
+    $idProducto = $_POST['idProducto'];
+    $nombreProducto = $_POST['nombreProducto'];
+    $precioUnitario = $_POST['precioUnitario'];
+    $cantidad = $_POST['cantidad'];
+
+    // Comprobar si el producto ya está en el carrito
+    $index = encontrarProductoEnCarrito($idProducto);
+    if ($index === false) {
+        // Si no está en el carrito, lo agregamos
+        $_SESSION['carrito'][] = array(
             'idProducto' => $idProducto,
             'nombreProducto' => $nombreProducto,
             'precioUnitario' => $precioUnitario,
-            'cantidad' => $cantidad,
-            'stock' => $_POST["stock"]
-        ];
+            'cantidad' => $cantidad
+        );
+    } else {
+        // Si ya está en el carrito, actualizamos la cantidad
+        $_SESSION['carrito'][$index]['cantidad'] += $cantidad;
     }
 }
 
-// Eliminar producto del carrito
-if (isset($_POST['eliminar']) && isset($_POST['idProducto'])) {
-    foreach ($_SESSION['carrito'] as $key => $producto) {
-        if ($producto['idProducto'] == $_POST['idProducto']) {
-            unset($_SESSION['carrito'][$key]); // Eliminar el producto
-            break;
-        }
+// Acción para actualizar la cantidad de un producto en el carrito
+if (isset($_POST['actualizar'])) {
+    $idProducto = $_POST['idProducto'];
+    $nuevaCantidad = $_POST['cantidad'];
+
+    // Encontramos el producto en el carrito y actualizamos la cantidad
+    $index = encontrarProductoEnCarrito($idProducto);
+    if ($index !== false) {
+        $_SESSION['carrito'][$index]['cantidad'] = $nuevaCantidad;
     }
 }
 
-// Cerrar la conexión
-$conn->close();
+// Acción para eliminar un producto del carrito
+if (isset($_POST['eliminar'])) {
+    $idProducto = $_POST['idProducto'];
+
+    // Encontramos el producto en el carrito y lo eliminamos
+    $index = encontrarProductoEnCarrito($idProducto);
+    if ($index !== false) {
+        unset($_SESSION['carrito'][$index]);
+        // Reorganizamos el array para evitar problemas con las claves
+        $_SESSION['carrito'] = array_values($_SESSION['carrito']);
+    }
+}
+
+// Mostrar el contenido del carrito
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,48 +84,57 @@ $conn->close();
     <title>Carrito de Compras</title>
 </head>
 <body>
-    <h1>Mi Carrito de Compras</h1>
+    <?php include '../includes/header.php'; ?>
+    
+    <h1>Carrito de Compras</h1>
 
-    <?php if (!empty($_SESSION['carrito'])): ?>
+    <?php if (count($_SESSION['carrito']) > 0): ?>
         <table>
             <thead>
                 <tr>
                     <th>Producto</th>
-                    <th>Cantidad</th>
                     <th>Precio Unitario</th>
+                    <th>Cantidad</th>
                     <th>Subtotal</th>
-                    <th>Acción</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
+                <?php 
                 $total = 0;
-                foreach ($_SESSION['carrito'] as $producto):
-                    $subtotal = $producto['cantidad'] * $producto['precioUnitario'];
+                foreach ($_SESSION['carrito'] as $item): 
+                    $subtotal = $item['precioUnitario'] * $item['cantidad'];
                     $total += $subtotal;
                 ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($producto['nombreProducto']); ?></td>
-                        <td><?php echo $producto['cantidad']; ?></td>
-                        <td>$<?php echo number_format($producto['precioUnitario'], 2); ?></td>
-                        <td>$<?php echo number_format($subtotal, 2); ?></td>
-                        <td>
-                            <form method="POST" action="">
-                                <input type="hidden" name="idProducto" value="<?php echo $producto['idProducto']; ?>">
-                                <input type="submit" name="eliminar" value="Eliminar">
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td><?php echo $item['nombreProducto']; ?></td>
+                    <td>$<?php echo number_format($item['precioUnitario'], 2); ?></td>
+                    <td>
+                        <!-- Formulario para actualizar la cantidad -->
+                        <form action="carrito.php" method="post">
+                            <input type="number" name="cantidad" value="<?php echo $item['cantidad']; ?>" min="1">
+                            <input type="hidden" name="idProducto" value="<?php echo $item['idProducto']; ?>">
+                            <button type="submit" name="actualizar">Actualizar</button>
+                        </form>
+                    </td>
+                    <td>$<?php echo number_format($subtotal, 2); ?></td>
+                    <td>
+                        <!-- Formulario para eliminar un producto -->
+                        <form action="carrito.php" method="post">
+                            <input type="hidden" name="idProducto" value="<?php echo $item['idProducto']; ?>">
+                            <button type="submit" name="eliminar">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <p>Total: $<?php echo number_format($total, 2); ?></p>
-        <form action="pedido.php" method="POST">
-            <input type="submit" value="Realizar Pedido">
+        <h3>Total: $<?php echo number_format($total, 2); ?></h3>
+        <form action="checkout.php" method="post">
+            <button type="submit">Proceder al Pago</button>
         </form>
     <?php else: ?>
-        <p>El carrito está vacío.</p>
+        <p>Tu carrito está vacío</p>
     <?php endif; ?>
-
 </body>
 </html>

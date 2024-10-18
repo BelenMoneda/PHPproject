@@ -8,7 +8,9 @@
 </head>
 <body>
     <div id="cabecera">
-        <img id="logo" src="../assets/images/logo/logo.png" alt="logo"></img>
+        <a href="index.php">
+            <img id="logo" src="../assets/images/logo/logo.png" alt="logo" ></img>
+        </a>
         <h1 id="titulo">POV Cámaras</h1>
         <nav>
             <ul>

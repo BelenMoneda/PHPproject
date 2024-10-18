@@ -1,63 +1,75 @@
-<!-- las imagenes, mostraremos la marca junto con el nombre de producto, id de producto pequeño debajo,  modelo, el precio, un texto con la descripcion, stok disponible y un boton de añadir el producto al carrito  -->
-
 <?php
-    if(isset($_POST['idProducto']))
-    {
-        $productoConsultado = $_POST['idProducto'];
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "povcamaras";
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        if ($conn->connect_error) {
-            die("Conexión fallida: " . $conn->connect_error);
-        }
-        $sql = "SELECT idProducto, nombreProducto, marca, modelo, precioUnitario, descripcion, stock, imagen FROM producto WHERE idProducto='$productoConsultado'";
-        $result = $conn->query($sql);
+// Verificamos si el producto ha sido consultado mediante POST
+if(isset($_POST['idProducto'])) {
+    $productoConsultado = $_POST['idProducto'];
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "povcamaras";
 
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $nombreProducto = $row["nombreProducto"];
-                $marca = $row["marca"];
-                $modelo = $row["modelo"];
-                $precioUnitario = $row["precioUnitario"];
-                $descripcion = $row["descripcion"];
-                $stock = $row["stock"];
-                $imagen = $row["imagen"];
-            }
-        } else {
-            echo "0 resultados";
-        }
-
-        $conn->close();
+    // Conexión a la base de datos
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Conexión fallida: " . $conn->connect_error);
     }
+
+    // Consulta para obtener detalles del producto
+    $sql = "SELECT idProducto, nombreProducto, marca, modelo, precioUnitario, descripcion, stock, imagen 
+            FROM PRODUCTO WHERE idProducto='$productoConsultado'";
+    $result = $conn->query($sql);
+
+    // Comprobamos si el producto existe
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $nombreProducto = $row["nombreProducto"];
+            $marca = $row["marca"];
+            $modelo = $row["modelo"];
+            $precioUnitario = $row["precioUnitario"];
+            $descripcion = $row["descripcion"];
+            $stock = $row["stock"];
+            $imagen = $row["imagen"];
+        }
+    } else {
+        echo "No se encontraron resultados para el producto.";
+    }
+
+    // Cerramos la conexión
+    $conn->close();
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle_producto</title>
+    <title>Detalle del Producto</title>
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
 
     <div>
-        <img src="<?php echo $imagen ?>" alt="imagen">
-        <p>Nombre: <?php echo $nombreProducto ?></p>
-        <p>ID: <?php echo $productoConsultado ?></p>
-        <p>Marca: <?php echo $marca ?></p>
-        <p>Modelo: <?php echo $modelo ?></p>
-        <p>Precio: <?php echo $precioUnitario ?></p>
-        <p>Descripcion: <?php echo $descripcion ?></p>
-        <p>Stock: <?php echo $stock ?></p>
-        <form action="carrito.php" method="post">
-            <input type="hidden" name="idProducto" value="<?php echo $productoConsultado ?>">
-            <input type="hidden" name="nombreProducto" value="<?php echo $nombreProducto ?>">
-            <input type="hidden" name="precioUnitario" value="<?php echo $precioUnitario ?>">
-            <input type="hidden" name="stock" value="<?php echo $stock ?>">
-            <button type="submit">Añadir al carrito</button>
-        </form>
+        <!-- Mostrar los detalles del producto -->
+        <img src="<?php echo $imagen ?>" alt="imagen del producto" width="300">
+        <p><strong>Nombre:</strong> <?php echo $nombreProducto ?></p>
+        <p><strong>ID:</strong> <?php echo $productoConsultado ?></p>
+        <p><strong>Marca:</strong> <?php echo $marca ?></p>
+        <p><strong>Modelo:</strong> <?php echo $modelo ?></p>
+        <p><strong>Precio:</strong> $<?php echo number_format($precioUnitario, 2) ?></p>
+        <p><strong>Descripción:</strong> <?php echo $descripcion ?></p>
+        <p><strong>Stock disponible:</strong> <?php echo $stock ?></p>
+
+        <!-- Formulario para agregar el producto al carrito -->
+        <?php if ($stock > 0): ?>
+            <form action="carrito.php" method="post">
+                <input type="hidden" name="idProducto" value="<?php echo $productoConsultado ?>">
+                <input type="hidden" name="nombreProducto" value="<?php echo $nombreProducto ?>">
+                <input type="hidden" name="precioUnitario" value="<?php echo $precioUnitario ?>">
+                <input type="number" name="cantidad" value="1" min="1" max="<?php echo $stock ?>" required>
+                <button type="submit" name="agregar">Añadir al carrito</button>
+            </form>
+        <?php else: ?>
+            <p>Producto agotado</p>
+        <?php endif; ?>
     </div>
 
 </body>

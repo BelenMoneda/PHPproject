@@ -45,6 +45,8 @@
     <title>Registro</title>
 </head>
 <body>
+    <?php include '../includes/header.php'; ?>
+
     <h1>Crear nuevo usuario</h1>   
 
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">

@@ -66,9 +66,10 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener un archivo CSS para los estilos -->
 </head>
 <body>
+<?php include '../includes/header.php'; ?>
 
     <!-- Formulario de filtro -->
-    <form method="GET" action="index.php">
+    <form method="GET" action="productos.php">
         <label for="categoria">Categoría:</label>
         <select name="categoria" id="categoria">
             <option value="">Todas</option>
