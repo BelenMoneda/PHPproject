@@ -52,7 +52,7 @@ $result = $conn->query($sql);
             echo "<p>No hay productos disponibles.</p>";
         }
 
-        // Cerrar la conexión
+
         $conn->close();
         ?>
     </div>
