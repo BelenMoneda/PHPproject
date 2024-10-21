@@ -29,9 +29,9 @@ if ($conn->connect_error) {
 <body>
     <h1>Bienvenido al Panel de Administración</h1>
     <nav>
-        <a href="gestion_producto.php">Gestionar Productos</a>
-        <a href="gestion_categorias.php">Gestionar Categorías</a>
-        <a href="login-destroy">Cerrar Sesión</a>
+        <a href="gestion-productos.php">Gestionar Productos</a>
+        <a href="gestion-categorias.php">Gestionar Categorías</a>
+        <a href="../public/login-destroy.php">Cerrar Sesión</a>
     </nav>
 </body>
 </html>

@@ -17,8 +17,6 @@ $conn = new mysqli($host, $user, $pass, $db);
 $sql = "SELECT  P.idProducto, P.nombreProducto, P.descripcion, P.precioUnitario, P.imagen, P.stock, C.nombreCategoria 
         FROM PRODUCTO P
         JOIN CATEGORIA C ON P.idCategoria = C.idCategoria";
-
-
 $result = $conn->query($sql);
 ?>
 
@@ -51,8 +49,6 @@ $result = $conn->query($sql);
         } else {
             echo "<p>No hay productos disponibles.</p>";
         }
-
-
         $conn->close();
         ?>
     </div>

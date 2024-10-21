@@ -44,7 +44,7 @@ if (isset($_GET['nombre']) && $_GET['nombre'] != '') {
 }
 
 // Consulta SQL para obtener productos
-$sql = "SELECT P.nombreProducto, P.descripcion, P.precioUnitario, P.imagen, P.stock, C.nombreCategoria 
+$sql = "SELECT P.idProducto, P.nombreProducto, P.descripcion, P.precioUnitario, P.imagen, P.stock, C.nombreCategoria 
         FROM PRODUCTO P
         JOIN CATEGORIA C ON P.idCategoria = C.idCategoria";
 
@@ -63,7 +63,8 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Cámaras</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener un archivo CSS para los estilos -->
+    <link rel="stylesheet" href="../assets/css/index.css"> 
+
 </head>
 <body>
 <?php include '../includes/header.php'; ?>
@@ -102,17 +103,19 @@ $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='producto'>";
-                echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "'>";
-                echo "<h3>" . $row['nombreProducto'] . "</h3>";
-                echo "<p>" . $row['descripcion'] . "</p>";
+                echo "<form method='POST' action='detalle_producto.php'>";
+                echo "<input type='hidden' name='idProducto' value='" . $row['idProducto'] . "'>";
+                echo "<button type='submit'><img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "' ></button>";
+                echo "</form>";
+                // echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "'>";
+                echo "<h4>" . $row['nombreProducto'] . "</h4>";
                 echo "<p>Precio: $" . $row['precioUnitario'] . "</p>";
-                echo "<p>Stock: " . $row['stock'] . "</p>";
-                echo "<p>Categoría: " . $row['nombreCategoria'] . "</p>";
                 echo "</div>";
             }
         } else {
             echo "<p>No hay productos disponibles.</p>";
         }
+        $conn->close();
         ?>
     </div>
 </body>

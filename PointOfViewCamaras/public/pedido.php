@@ -7,39 +7,66 @@ if (!isset($_SESSION['idUsuario'])) {
     exit();
 }
 
-// Verificar si el carrito tiene productos
-if (empty($_SESSION['carrito'])) {
-    echo "El carrito está vacío.";
-    exit();
-}
-
-// Conexión a la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "povcamaras";
-$conn = new mysqli($servername, $username, $password, $dbname);
 
+// Conexión a la base de datos
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Obtener detalles del usuario
+$idPedido = $_POST['idPedido']; // El ID del pedido que se pasó desde el carrito
 $idUsuario = $_SESSION['idUsuario'];
-$sqlUsuario = "SELECT nombreUsuario, apellidos, email, direccion FROM USUARIOS WHERE idUsuario = ?";
-$stmtUsuario = $conn->prepare($sqlUsuario);
-$stmtUsuario->bind_param("i", $idUsuario);
-$stmtUsuario->execute();
-$resultUsuario = $stmtUsuario->get_result();
-$usuario = $resultUsuario->fetch_assoc();
-$stmtUsuario->close();
 
-// Calcular el total del pedido
-$total = 0;
-foreach ($_SESSION['carrito'] as $producto) {
-    $total += $producto['cantidad'] * $producto['precioUnitario'];
+// Verificar si se ha enviado el formulario de completar pedido
+if (isset($_POST['completarPedido'])) {
+    $nombreUsuario = $_POST['nombreUsuario'];
+    $apellidos = $_POST['apellidos'];
+    $email = $_POST['email'];
+    $direccion = $_POST['direccion'];
+    $fechaPedido = date("Y-m-d"); // Fecha actual
+    $estadoPedido = "procesado"; // Estado del pedido después de ser completado
+    $estadoPago = "Pendiente"; // Por defecto, el pago está pendiente
+
+    // Validar los campos requeridos
+    if (empty($nombreUsuario) || empty($apellidos) || empty($email)) {
+        $error = "Por favor, completa todos los campos requeridos.";
+    } else {
+        // Actualizar la tabla PEDIDO con los datos proporcionados por el usuario
+        $sqlUpdatePedido = "UPDATE PEDIDO 
+                            SET nombreUsuario='$nombreUsuario', apellidos='$apellidos', email='$email', direccion='$direccion', 
+                                estadoPedido='$estadoPedido', fechaPedido='$fechaPedido', estadoPago='$estadoPago' 
+                            WHERE idPedido='$idPedido'";
+
+        if ($conn->query($sqlUpdatePedido) === TRUE) {
+            $success = "Datos completados exitosamente. ";
+            header("Location: pago.php?idPedido=$idPedido");
+        } else {
+            $error = "Error al completar el pedido: " . $conn->error;
+        }
+    }
 }
 
+// Obtener la información del pedido y el total
+$sqlPedido = "SELECT precioTotal FROM PEDIDO WHERE idPedido='$idPedido' AND idUsuario='$idUsuario'";
+$resultPedido = $conn->query($sqlPedido);
+
+if ($resultPedido->num_rows > 0) {
+    $rowPedido = $resultPedido->fetch_assoc();
+    $precioTotal = $rowPedido['precioTotal'];
+} else {
+    die("No se encontró el pedido.");
+}
+
+// Obtener los productos del pedido
+$sqlProductos = "SELECT LP.idProducto, P.nombreProducto, LP.cantidad, LP.precioUnitario, LP.subtotal 
+                 FROM LINEA_PEDIDO LP 
+                 JOIN PRODUCTO P ON LP.idProducto = P.idProducto 
+                 WHERE LP.idPedido='$idPedido'";
+$resultProductos = $conn->query($sqlProductos);
 
 $conn->close();
 ?>
@@ -49,18 +76,38 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmar Pedido</title>
+    <title>Completar Pedido</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-container { max-width: 500px; margin: auto; }
+        .form-container h2 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 8px; }
+        .error { color: red; margin-bottom: 15px; }
+        .success { color: green; margin-bottom: 15px; }
+        .total-container { font-weight: bold; text-align: center; margin-top: 20px; }
+        .productos-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .productos-table th, .productos-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .productos-table th { background-color: #f2f2f2; }
+    </style>
 </head>
 <body>
-    <h1>Confirmar Pedido</h1>
 
-    <h2>Detalles del Usuario</h2>
-    <p>Nombre: <?php echo htmlspecialchars($usuario['nombreUsuario'] . ' ' . $usuario['apellidos']); ?></p>
-    <p>Email: <?php echo htmlspecialchars($usuario['email']); ?></p>
-    <p>Dirección: <?php echo htmlspecialchars($usuario['direccion']); ?></p>
+<div class="form-container">
+    <h2>Completar Pedido</h2>
 
-    <h2>Resumen del Carrito</h2>
-    <table>
+    <?php if (isset($error)): ?>
+        <p class="error"><?php echo $error; ?></p>
+    <?php endif; ?>
+
+    <?php if (isset($success)): ?>
+        <p class="success"><?php echo $success; ?></p>
+    <?php endif; ?>
+
+    <!-- Mostrar los productos en el pedido -->
+    <h3>Productos en el Pedido:</h3>
+    <table class="productos-table">
         <thead>
             <tr>
                 <th>Producto</th>
@@ -70,20 +117,53 @@ $conn->close();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($_SESSION['carrito'] as $producto): ?>
+            <?php if ($resultProductos && $resultProductos->num_rows > 0): ?>
+                <?php while ($rowProducto = $resultProductos->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $rowProducto['nombreProducto']; ?></td>
+                        <td><?php echo $rowProducto['cantidad']; ?></td>
+                        <td>$<?php echo number_format($rowProducto['precioUnitario'], 2); ?></td>
+                        <td>$<?php echo number_format($rowProducto['subtotal'], 2); ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($producto['nombreProducto']); ?></td>
-                    <td><?php echo $producto['cantidad']; ?></td>
-                    <td>$<?php echo number_format($producto['precioUnitario'], 2); ?></td>
-                    <td>$<?php echo number_format($producto['cantidad'] * $producto['precioUnitario'], 2); ?></td>
+                    <td colspan="4">No hay productos en este pedido.</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
-    <p>Total a Pagar: $<?php echo number_format($total, 2); ?></p>
 
-    <form method="POST" action="">
-        <input type="submit" value="Confirmar Pedido">
+    <div class="total-container">
+        <p>Total del Pedido: $<?php echo number_format($precioTotal, 2); ?></p>
+    </div>
+
+    <form action="pedido.php" method="post">
+        <input type="hidden" name="idPedido" value="<?php echo $idPedido; ?>">
+
+        <div class="form-group">
+            <label for="nombreUsuario">Nombre</label>
+            <input type="text" name="nombreUsuario" id="nombreUsuario" required>
+        </div>
+
+        <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" name="apellidos" id="apellidos" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" name="direccion" id="direccion" required>
+        </div>
+
+        <button type="submit" name="completarPedido">Completar Pedido</button>
     </form>
+</div>
+
 </body>
 </html>

@@ -59,7 +59,11 @@
             }
             else
             {
-                echo "Debe registrarse"; 
+                echo "Usuario no encontrado"; 
+                echo "<br>";
+                echo "Desea registrarse?";
+                echo "<a href='registro.php'> Registro</a>";
+                
             }   
         }
     }
@@ -71,6 +75,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
 </head>
 <body>     
         <h1>Inicio de sesión</h1>

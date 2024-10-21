@@ -1,11 +1,20 @@
-<?php
+<?php 
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
+if ($_SESSION['idRol'] != 1) {
+    header("Location: index.php");
     exit();
 }
 
-require_once 'db_connection.php'; // Incluye archivo de conexión a la base de datos
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "povcamaras";
+
+// Conexión a la base de datos
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
 
 // Añadir categoría
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
@@ -25,6 +34,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
 // Listar categorías
 $sql = "SELECT * FROM CATEGORIA";
 $result = $conn->query($sql);
+
 ?>
 
-<!DOCTYPE
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Categorías</title>
+</head>
+<body>
+    <h1>Gestionar Categorías</h1>
+    
+    <h2>Añadir Categoría</h2>
+    <form method="post" action="gestion-categorias.php">
+        <label>Nombre de la Categoría:</label><br>
+        <input type="text" name="nombreCategoria" required><br>
+        <input type="submit" name="add_category" value="Añadir Categoría">
+    </form>
+
+    <?php if (isset($successMessage)) echo "<p>$successMessage</p>"; ?>
+    <?php if (isset($errorMessage)) echo "<p>$errorMessage</p>"; ?>
+
+    <h2>Lista de Categorías</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre de la Categoría</th>
+            <th>Acciones</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $row['idCategoria']; ?></td>
+                <td><?php echo $row['nombreCategoria']; ?></td>
+                <td>
+                    <a href="edit_categoria.php?id=<?php echo $row['idCategoria']; ?>">Editar</a>
+                    <a href="delete_categoria.php?id=<?php echo $row['idCategoria']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">Eliminar</a>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </table>
+</body>
+</html>
+
+<?php
+$conn->close();
+?>

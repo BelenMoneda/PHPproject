@@ -1,11 +1,21 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
+if ($_SESSION['idRol'] != 1) {
+    header("Location: index.php");
     exit();
 }
 
-require_once 'db_connection.php'; // Incluye archivo de conexión a la base de datos
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "povcamaras";
+
+// Conexión a la base de datos
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
 
 // Añadir producto
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
@@ -45,7 +55,7 @@ $result = $conn->query($sql);
     <h1>Gestionar Productos</h1>
     
     <h2>Añadir Producto</h2>
-    <form method="post" action="manage_products.php">
+    <form method="post" action="gestion-productos.php">
         <label>Nombre:</label><br>
         <input type="text" name="nombreProducto" required><br>
         <label>Marca:</label><br>
@@ -64,8 +74,10 @@ $result = $conn->query($sql);
         <input type="number" name="precioUnitario" step="0.01" required><br>
         <label>Stock:</label><br>
         <input type="number" name="stock" required><br>
-        <label>Imagen:</label><br>
-        <input type="text" name="imagen" required><br>
+        <div class="form-group">
+        <label for="imagen">Imagen:</label>
+        <input type="file" name="imagen" id="imagen" accept="image/*" required>
+        </div>
         <input type="submit" name="add_product" value="Añadir Producto">
     </form>
 

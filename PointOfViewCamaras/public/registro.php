@@ -25,6 +25,8 @@
             $sql = "INSERT INTO usuarios (nombreUsuario, apellidos, email,direccion,telefono, contrasena,idRol) VALUES ('$nombre','$apellidos', '$email','$direccion','$telefono', '$contraseña','2')";
         
             if ($conn->query($sql) === TRUE) {
+                echo "Usuario creado correctamente";
+                sleep(2);
                 header("Location: login.php");
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
