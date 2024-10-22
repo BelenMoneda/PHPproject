@@ -25,6 +25,7 @@ if ($conn->connect_error) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
+    <link rel="stylesheet" href="../assets/css/zona-admin.css">
 </head>
 <body>
     <h1>Bienvenido al Panel de Administración</h1>

@@ -1,24 +1,20 @@
 <?php
-// Verificamos si el producto ha sido consultado mediante POST
-if(isset($_POST['idProducto'])) {
-    $productoConsultado = $_POST['idProducto'];
+if(isset($_GET['idProducto'])) {
+    $productoConsultado = $_GET['idProducto'];
     $servername = "localhost";
     $username = "root";
     $password = "";
     $dbname = "povcamaras";
 
-    // Conexión a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
         die("Conexión fallida: " . $conn->connect_error);
     }
 
-    // Consulta para obtener detalles del producto
     $sql = "SELECT idProducto, nombreProducto, marca, modelo, precioUnitario, descripcion, stock, imagen 
             FROM PRODUCTO WHERE idProducto='$productoConsultado'";
     $result = $conn->query($sql);
 
-    // Comprobamos si el producto existe
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             $nombreProducto = $row["nombreProducto"];
@@ -33,7 +29,6 @@ if(isset($_POST['idProducto'])) {
         echo "No se encontraron resultados para el producto.";
     }
 
-    // Cerramos la conexión
     $conn->close();
 }
 ?>
@@ -48,7 +43,6 @@ if(isset($_POST['idProducto'])) {
     <?php include '../includes/header.php'; ?>
 
     <div>
-        <!-- Mostrar los detalles del producto -->
         <img src="<?php echo $imagen ?>" alt="imagen del producto" width="300">
         <p><strong>Nombre:</strong> <?php echo $nombreProducto ?></p>
         <p><strong>ID:</strong> <?php echo $productoConsultado ?></p>
@@ -58,7 +52,6 @@ if(isset($_POST['idProducto'])) {
         <p><strong>Descripción:</strong> <?php echo $descripcion ?></p>
         <p><strong>Stock disponible:</strong> <?php echo $stock ?></p>
 
-        <!-- Formulario para agregar el producto al carrito -->
         <?php if ($stock > 0): ?>
             <form action="carrito.php" method="post">
                 <input type="hidden" name="idProducto" value="<?php echo $productoConsultado ?>">

@@ -59,6 +59,7 @@
             }
             else
             {
+                
                 echo "Usuario no encontrado"; 
                
             }   
@@ -72,17 +73,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/login.css">
 
 </head>
 <body>     
-        <h1>Inicio de sesión</h1>
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+
+        <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" id="email" required>        <br>
             <label for="contraseña">Contraseña:</label>
             <input type="password" name="contraseña" id="contraseña" required>        <br>
             <input type="submit" value="Iniciar sesión">
         </form>
-        <a href="registro.php">Registrarse</a>
+        <a href="registro.php">Registrarse</a> -->
+
+        <section class="form-main">
+        <div class="form-content">
+            <div class="box">
+                <a href="index.php"><img src="../assets/images/logo/logo.jpg" class="logo"></a>
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                    <div class="input-box">
+                        <input type="text" placeholder="Email" name="email" class="input-control" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Contraseña" name="contraseña" class="input-control" required>
+                    </div>
+                    <button type="submit" class="btn">Iniciar Sesión</button>
+                </form>
+                <p>No tienes una cuenta? <a href="registro.php" class="gradient-text">Crear cuenta</a></p>
+            </div>
+        </div>
+        </section>
 </body>
 </html>

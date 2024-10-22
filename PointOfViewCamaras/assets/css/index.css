@@ -1,25 +1,115 @@
-body{
-    display: flex;
-    flex-direction: column;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.productos{
-    display: flex;
-    /* justify-content: space-around; */
-    flex-wrap: wrap;
-    margin-top: 20px;
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 0 20px;
 }
-.producto{
-    height: 300px;
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    /* border: 1px solid black; */
-    margin: 10px;
-    padding: 10px;
+
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #333;
+    font-family: 'Rethink Sans', sans-serif;
+    font-weight: 700; 
+    font-size: 2.5em;
 }
-img{
+
+
+.video-container {
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
+.productos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Cuatro columnas */
+    gap: 20px;
+    padding: 20px 0;
+}
+
+
+.producto {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.producto button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.producto img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+
+.producto h4 {
+    margin: 15px 0 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.producto p {
+    font-size: 1em;
+    color: #555;
+}
+
+
+@media (max-width: 1024px) {
+    .productos {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    .productos {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+
+    .producto {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .productos {
+        grid-template-columns: 1fr; 
+    }
+}

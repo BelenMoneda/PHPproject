@@ -9,9 +9,9 @@
 <body>
     <div id="cabecera">
         <a href="index.php">
-            <img id="logo" src="../assets/images/logo/logo.png" alt="logo" ></img>
+            <img id="logo" src="../assets/images/logo/logo.jpg" alt="logo" ></img>
         </a>
-        <h1 id="titulo">POV Cámaras</h1>
+
         <nav>
             <ul>
                 <li><a href="index.php">Inicio</a></li>
