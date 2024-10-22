@@ -20,6 +20,12 @@ if ($conn->connect_error) {
 
 $idPedido = $_POST['idPedido']; // El ID del pedido que se pasó desde el carrito
 $idUsuario = $_SESSION['idUsuario'];
+$nombreUsuarioRegistrado = $_SESSION['nombreUsuario'];
+$apellidosRegistrados = $_SESSION['apellidos'];
+$emailRegistrado = $_SESSION['email'];
+$direccionRegistrada = $_SESSION['direccion'];
+
+
 
 // Verificar si se ha enviado el formulario de completar pedido
 if (isset($_POST['completarPedido'])) {
@@ -143,22 +149,22 @@ $conn->close();
 
         <div class="form-group">
             <label for="nombreUsuario">Nombre</label>
-            <input type="text" name="nombreUsuario" id="nombreUsuario" required>
+            <input type="text" name="nombreUsuario" id="nombreUsuario"  value="<?php echo "$nombreUsuarioRegistrado"?>" required>
         </div>
 
         <div class="form-group">
             <label for="apellidos">Apellidos</label>
-            <input type="text" name="apellidos" id="apellidos" required>
+            <input type="text" name="apellidos" id="apellidos" value="<?php echo "$apellidosRegistrados"?>" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email" value="<?php echo"$emailRegistrado"?>" required>
         </div>
 
         <div class="form-group">
             <label for="direccion">Dirección</label>
-            <input type="text" name="direccion" id="direccion" required>
+            <input type="text" name="direccion" id="direccion" value="<?php echo"$direccionRegistrada"?>" required>
         </div>
 
         <button type="submit" name="completarPedido">Completar Pedido</button>

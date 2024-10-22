@@ -61,7 +61,7 @@
         <label for="direccion">Direccion:</label>
         <input type="text" name="direccion" id="direccion" required>        <br>
         <label for="telefono">Telefono:</label>
-        <input type="text" name="telefono" id="telefono" required>        <br>
+        <input type="text" name="telefono" id="telefono" pattern="\d{9}" title="Debe contener 9 números" required>        <br>
         <label for="contraseña">Contraseña:</label>
         <input type="password" name="contraseña" id="contraseña" required>        <br>
         <input type="submit" value="Registrar">

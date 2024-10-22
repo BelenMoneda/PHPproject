@@ -186,6 +186,7 @@ $resultCarrito = $conn->query($sqlCarrito);
                 <button type="submit" name="realizarPedido">Realizar Pedido</button>
             </form>
         <?php endif; ?>
+        <button onclick="location.href='productos.php'">Seguir Comprando</button>
     </div>
 </body>
 </html>

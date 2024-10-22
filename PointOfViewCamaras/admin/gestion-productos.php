@@ -76,7 +76,7 @@ $result = $conn->query($sql);
         <input type="number" name="stock" required><br>
         <div class="form-group">
         <label for="imagen">Imagen:</label>
-        <input type="file" name="imagen" id="imagen" accept="image/*" required>
+        <input type="text" name="imagen" id="imagen" value="../assets/images/productos/.jpg" required>
         </div>
         <input type="submit" name="add_product" value="Añadir Producto">
     </form>

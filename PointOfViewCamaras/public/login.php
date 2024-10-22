@@ -60,10 +60,7 @@
             else
             {
                 echo "Usuario no encontrado"; 
-                echo "<br>";
-                echo "Desea registrarse?";
-                echo "<a href='registro.php'> Registro</a>";
-                
+               
             }   
         }
     }
@@ -86,5 +83,6 @@
             <input type="password" name="contraseña" id="contraseña" required>        <br>
             <input type="submit" value="Iniciar sesión">
         </form>
+        <a href="registro.php">Registrarse</a>
 </body>
 </html>
