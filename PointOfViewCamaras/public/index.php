@@ -31,7 +31,12 @@ $result = $conn->query($sql);
 <body>
     <?php include '../includes/header.php'; ?>
     <h1>Bienvenido a la tienda POV Cámaras</h1>
-    
+    <div class="video-container">
+    <video width="320" height="240" autoplay loop muted>
+        <source src="../assets/css/video/video.mp4" type="video/mp4">
+        Tu navegador no soporta la etiqueta de video.
+    </video>
+    </div>
     <div class="productos">
         <?php
         if ($result->num_rows > 0) {
