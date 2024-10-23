@@ -69,13 +69,12 @@ $result = $conn->query($sql);
 <body>
 <?php include '../includes/header.php'; ?>
 
-    <!-- Formulario de filtro -->
     <form method="GET" action="productos.php">
         <label for="categoria">Categoría:</label>
         <select name="categoria" id="categoria">
             <option value="">Todas</option>
             <?php
-            // Obtener las categorías
+
             $catSql = "SELECT idCategoria, nombreCategoria FROM CATEGORIA";
             $catResult = $conn->query($catSql);
             if ($catResult->num_rows > 0) {
@@ -103,13 +102,14 @@ $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='producto'>";
-                echo "<form method='POST' action='detalle_producto.php'>";
+                echo "<form method='GET' action='detalle_producto.php' style='cursor: pointer;'>"; 
                 echo "<input type='hidden' name='idProducto' value='" . $row['idProducto'] . "'>";
-                echo "<button type='submit'><img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "' ></button>";
+                echo "<button type='submit' style='border: none; background: none; width: 100%; padding: 0; text-align: left;'>"; 
+                echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "' style='width: 100%; height: auto; border-radius: 8px;'>";
+                echo "<h4 style='margin: 10px 0;'>" . $row['nombreProducto'] . "</h4>";
+                echo "<p style='color: #555;'>Precio: $" . $row['precioUnitario'] . "</p>";
+                echo "</button>";
                 echo "</form>";
-                // echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "'>";
-                echo "<h4>" . $row['nombreProducto'] . "</h4>";
-                echo "<p>Precio: $" . $row['precioUnitario'] . "</p>";
                 echo "</div>";
             }
         } else {

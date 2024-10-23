@@ -182,13 +182,6 @@ a{
     position: relative; 
 }
 
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
 
 @keyframes logo {
     0%   {

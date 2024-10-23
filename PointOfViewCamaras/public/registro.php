@@ -44,11 +44,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/registro.css">
     <title>Registro</title>
 </head>
 <body>
-    <?php include '../includes/header.php'; ?>
 
+    <!-- 
     <h1>Crear nuevo usuario</h1>   
 
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -65,6 +66,36 @@
         <label for="contraseña">Contraseña:</label>
         <input type="password" name="contraseña" id="contraseña" required>        <br>
         <input type="submit" value="Registrar">
-    </form>
+    </form> -->
+
+    
+    <section class="form-main">
+        <div class="form-content">
+            <div class="box">
+                <a href="index.php"><img src="../assets/images/logo/logo.jpg" class="logo"></a>
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                    <div class="input-box">
+                        <input type="text" placeholder="Nombre" name="nombre" class="input-control" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="Apellidos" name="apellidos" class="input-control" required>
+                    </div>    
+                    <div class="input-box">
+                        <input type="text" placeholder="Email" name="email" class="input-control" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="Direccion" name="direccion" class="input-control" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" placeholder="Telefono" name="telefono" class="input-control" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Contraseña" name="contraseña" class="input-control" required>
+                    </div>
+                    <button type="submit" class="btn">Crear cuenta</button>
+                </form>
+            </div>
+        </div>
+        </section>
 </body>
 </html>

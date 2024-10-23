@@ -1,4 +1,6 @@
 <?php
+    $errorMessage = "";  // Variable para almacenar el mensaje de error
+
     if($_SERVER['REQUEST_METHOD'] == "POST")
     {
         if(isset($_POST['email']) && isset($_POST['contraseña']))
@@ -13,13 +15,11 @@
         
             $conn = new mysqli($servername, $username, $password, $dbname);
 
-            $sql = "SELECT idUsuario, nombreUsuario, apellidos ,email, direccion, telefono, contrasena, idRol, metodoPago FROM usuarios where email='$emailUsuario'";
+            $sql = "SELECT idUsuario, nombreUsuario, apellidos ,email, direccion, telefono, contrasena, idRol, metodoPago FROM usuarios WHERE email='$emailUsuario'";
 
             $result = $conn->query($sql);
         
-
             if ($result->num_rows > 0) {
-
                 $row = $result->fetch_assoc();  
                 $idUsuario = $row["idUsuario"];
                 $nombreUsuario = $row["nombreUsuario"];
@@ -33,10 +33,9 @@
                 
                 if($emailUsuario == $email && $contrasena == $contraseñaUsuario)
                 {
-                    
                     session_start();
                     $_SESSION['idUsuario'] = $idUsuario;
-                    $_SESSION['nombreUsuario'] =$nombreUsuario;
+                    $_SESSION['nombreUsuario'] = $nombreUsuario;
                     $_SESSION['apellidos'] = $apellidos;
                     $_SESSION['email'] = $email;
                     $_SESSION['direccion'] = $direccion;
@@ -46,26 +45,17 @@
 
                     if ($idRol == 1) {
                         header('Location: ../admin/zona-admin.php');
-                    }
-                    else {
+                    } else {
                         header('Location: index.php');
                     }
-
+                } else {
+                    $errorMessage = "Usuario o contraseña incorrectos";  // Mensaje de error para credenciales incorrectas
                 }
-                else
-                {
-                    echo "Usuario o contraseña incorrectos";
-                }
-            }
-            else
-            {
-                
-                echo "Usuario no encontrado"; 
-               
+            } else {
+                $errorMessage = "Usuario no encontrado";  // Mensaje de error si el usuario no existe
             }   
         }
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,20 +64,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../assets/css/login.css">
-
 </head>
 <body>     
-
-        <!-- <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <label for="email">Email:</label>
-            <input type="text" name="email" id="email" required>        <br>
-            <label for="contraseña">Contraseña:</label>
-            <input type="password" name="contraseña" id="contraseña" required>        <br>
-            <input type="submit" value="Iniciar sesión">
-        </form>
-        <a href="registro.php">Registrarse</a> -->
-
-        <section class="form-main">
+    <section class="form-main">
         <div class="form-content">
             <div class="box">
                 <a href="index.php"><img src="../assets/images/logo/logo.jpg" class="logo"></a>
@@ -98,11 +77,15 @@
                     <div class="input-box">
                         <input type="password" placeholder="Contraseña" name="contraseña" class="input-control" required>
                     </div>
+                    <!-- Mostrar mensaje de error si existe -->
                     <button type="submit" class="btn">Iniciar Sesión</button>
+                    <?php if(!empty($errorMessage)): ?>
+                        <div class="error-message"><?php echo $errorMessage; ?></div>
+                    <?php endif; ?>
                 </form>
                 <p>No tienes una cuenta? <a href="registro.php" class="gradient-text">Crear cuenta</a></p>
             </div>
         </div>
-        </section>
+    </section>
 </body>
 </html>
