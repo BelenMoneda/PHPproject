@@ -39,20 +39,20 @@ nav ul li a:hover, nav ul li a:focus {
 
 @media (max-width: 768px) {
     #cabecera {
-        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
-        align-items: flex-start; /* Alinea los elementos al inicio */
+        flex-direction: column; 
+        align-items: flex-start; 
     }
 
     nav ul {
-        flex-direction: column; /* Cambia a columna para la navegación */
-        width: 100%; /* Asegúrate de que ocupe todo el ancho */
-        padding: 0; /* Elimina el padding para una mejor presentación */
-        gap: 10px; /* Ajusta el espacio entre los enlaces */
+        flex-direction: column; 
+        width: 100%; 
+        padding: 0; 
+        gap: 10px; 
     }
 
     nav ul li a {
-        padding: 10px; /* Ajusta el padding para mejor tacto en móviles */
-        text-align: center; /* Centra el texto en cada enlace */
-        width: 100%; /* Hace que cada enlace ocupe todo el ancho */
+        padding: 10px; 
+        text-align: center;
+        width: 100%; 
     }
 }

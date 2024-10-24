@@ -19,10 +19,11 @@
             <ul>
                 <li><a href="index.php">Inicio</a></li>
                 <li><a href="registro.php">Registrarse</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="login-destroy.php">Logout</a></li>
                 <li><a href="productos.php">Productos</a></li>
                 <li><a href="carrito.php">Carrito</a></li>
+                <li><a href="perfil.php">Perfil</a></li>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="login-destroy.php">Logout</a></li>
             </ul>
         </nav> 
     </div>
