@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Verificar si el usuario ha iniciado sesión
+
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: login.php");
     exit();
@@ -11,7 +11,6 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
@@ -47,7 +46,7 @@ if (isset($_POST['modificarCantidad'])) {
         $rowCantidad = $resultCantidad->fetch_assoc();
         $cantidadActual = $rowCantidad['cantidad'];
 
-        // Obtener stock disponible
+        
         $sqlStock = "SELECT stock FROM PRODUCTO WHERE idProducto='$idProducto'";
         $resultStock = $conn->query($sqlStock);
         $stockDisponible = 0;
@@ -56,7 +55,7 @@ if (isset($_POST['modificarCantidad'])) {
             $stockDisponible = $rowStock['stock'];
         }
 
-        // Procesar la acción de incrementar o decrementar
+        
         if ($accion == 'incrementar') {
             if ($cantidadActual < $stockDisponible) {
                 $nuevaCantidad = $cantidadActual + 1;
@@ -67,52 +66,56 @@ if (isset($_POST['modificarCantidad'])) {
         } elseif ($accion == 'decrementar' && $cantidadActual > 1) {
             $nuevaCantidad = $cantidadActual - 1;
         } elseif ($accion == 'decrementar' && $cantidadActual == 1) {
-            // Si la cantidad es 1, eliminar el producto del carrito
+            
             $sqlDeleteLineaPedido = "DELETE FROM LINEA_PEDIDO WHERE idProducto='$idProducto' AND idPedido='$idPedido'";
             $conn->query($sqlDeleteLineaPedido);
-            $nuevaCantidad = 0; // Ya se eliminó, no actualizar más
+            $nuevaCantidad = 0; 
         } else {
             $nuevaCantidad = $cantidadActual;
         }
 
-        // Actualizar la cantidad en la base de datos si no se eliminó
         if ($nuevaCantidad > 0) {
             $sqlUpdateLineaPedido = "UPDATE LINEA_PEDIDO SET cantidad='$nuevaCantidad', subtotal=precioUnitario * '$nuevaCantidad' 
                                      WHERE idProducto='$idProducto' AND idPedido='$idPedido'";
             $conn->query($sqlUpdateLineaPedido);
         }
 
-        // Actualizar el total del pedido
         $sqlUpdatePedido = "UPDATE PEDIDO SET precioTotal = (SELECT SUM(subtotal) FROM LINEA_PEDIDO WHERE idPedido='$idPedido') 
                             WHERE idPedido='$idPedido'";
         $conn->query($sqlUpdatePedido);
     }
 }
 
-// Verificar si se ha enviado un producto para agregar al carrito
 if (isset($_POST['agregar'])) {
     $idProducto = $_POST['idProducto'];
     $cantidad = $_POST['cantidad'];
     $precioUnitario = $_POST['precioUnitario'];
     $subtotal = $precioUnitario * $cantidad;
 
-    // Insertar la línea de pedido (producto añadido al carrito)
-    $sqlInsertLineaPedido = "INSERT INTO LINEA_PEDIDO (idUsuario,cantidad, precioUnitario, idPedido, idProducto, subtotal) 
-                             VALUES ('$idUsuario','$cantidad', '$precioUnitario', '$idPedido', '$idProducto', '$subtotal')";
+    $sqlCheckProducto = "SELECT cantidad FROM LINEA_PEDIDO WHERE idProducto='$idProducto' AND idPedido='$idPedido'";
+    $resultCheckProducto = $conn->query($sqlCheckProducto);
 
-    if ($conn->query($sqlInsertLineaPedido) === TRUE) {
-        echo "Producto añadido al carrito exitosamente.";
+    if ($resultCheckProducto->num_rows > 0) {
+        $rowProducto = $resultCheckProducto->fetch_assoc();
+        $cantidadExistente = $rowProducto['cantidad'];
+        $nuevaCantidad = $cantidadExistente + $cantidad;
+        $nuevoSubtotal = $precioUnitario * $nuevaCantidad;
+
+        $sqlUpdateLineaPedido = "UPDATE LINEA_PEDIDO 
+                                 SET cantidad='$nuevaCantidad', subtotal='$nuevoSubtotal' 
+                                 WHERE idProducto='$idProducto' AND idPedido='$idPedido'";
+        $conn->query($sqlUpdateLineaPedido);
     } else {
-        echo "Error al añadir producto al carrito: " . $conn->error;
+        $sqlInsertLineaPedido = "INSERT INTO LINEA_PEDIDO (idUsuario, cantidad, precioUnitario, idPedido, idProducto, subtotal) 
+                                 VALUES ('$idUsuario', '$cantidad', '$precioUnitario', '$idPedido', '$idProducto', '$subtotal')";
+        $conn->query($sqlInsertLineaPedido);
     }
 
-    // Actualizar el total del pedido
     $sqlUpdatePedido = "UPDATE PEDIDO SET precioTotal = (SELECT SUM(subtotal) FROM LINEA_PEDIDO WHERE idPedido='$idPedido') 
                         WHERE idPedido='$idPedido'";
     $conn->query($sqlUpdatePedido);
 }
 
-// Mostrar los productos en el carrito
 $sqlCarrito = "SELECT LP.idProducto, P.nombreProducto, LP.cantidad, LP.precioUnitario, LP.subtotal 
                FROM LINEA_PEDIDO LP 
                JOIN PRODUCTO P ON LP.idProducto = P.idProducto 
@@ -125,13 +128,7 @@ $resultCarrito = $conn->query($sqlCarrito);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .carrito-container { margin: 20px; }
-        .carrito-item { margin-bottom: 15px; }
-        .total-container { margin-top: 20px; font-weight: bold; }
-        .cantidad-buttons { display: inline-block; }
-    </style>
+    <link rel="stylesheet" href="../assets/css/carrito.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
@@ -144,7 +141,6 @@ $resultCarrito = $conn->query($sqlCarrito);
                 echo "<div class='carrito-item'>";
                 echo "<p>Producto: " . $row['nombreProducto'] . " | Cantidad: " . $row['cantidad'] . " | Precio Unitario: $" . number_format($row['precioUnitario'], 2) . " | Subtotal: $" . number_format($row['subtotal'], 2) . "</p>";
 
-                // Botones para incrementar y decrementar la cantidad
                 echo "<div class='cantidad-buttons'>";
                 echo "<form action='' method='post' style='display:inline;'>";
                 echo "<input type='hidden' name='idProducto' value='" . $row['idProducto'] . "'>";
@@ -179,7 +175,6 @@ $resultCarrito = $conn->query($sqlCarrito);
             ?>
         </div>
 
-        <!-- Botón para realizar pedido -->
         <?php if ($resultCarrito && $resultCarrito->num_rows > 0): ?>
             <form action="pedido.php" method="post">
                 <input type="hidden" name="idPedido" value="<?php echo $idPedido; ?>">
