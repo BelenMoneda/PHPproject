@@ -10,14 +10,11 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-
-// Añadir producto
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
     $nombreProducto = $_POST['nombreProducto'];
     $marca = $_POST['marca'];
@@ -26,20 +23,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
     $idCategoria = $_POST['idCategoria'];
     $precioUnitario = $_POST['precioUnitario'];
     $stock = $_POST['stock'];
-    $imagen = $_POST['imagen'];
-
-    $sql = "INSERT INTO PRODUCTO (nombreProducto, marca, modelo, descripcion, idCategoria, precioUnitario, stock, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssiids", $nombreProducto, $marca, $modelo, $descripcion, $idCategoria, $precioUnitario, $stock, $imagen);
     
-    if ($stmt->execute()) {
-        $successMessage = "Producto añadido correctamente.";
+    // Procesar la imagen cargada
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+        $nombreImagen = basename($_FILES["imagen"]["name"]);
+        $rutaDestino = "../assets/images/productos/" . $nombreImagen;
+        
+        // Mover la imagen a la carpeta destino
+        if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaDestino)) {
+            // Guardar la ruta de la imagen en la base de datos
+            $imagen = $rutaDestino;
+
+            $sql = "INSERT INTO PRODUCTO (nombreProducto, marca, modelo, descripcion, idCategoria, precioUnitario, stock, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssiids", $nombreProducto, $marca, $modelo, $descripcion, $idCategoria, $precioUnitario, $stock, $imagen);
+            
+            if ($stmt->execute()) {
+                $successMessage = "Producto añadido correctamente.";
+            } else {
+                $errorMessage = "Error al añadir el producto.";
+            }
+        } else {
+            $errorMessage = "Error al subir la imagen.";
+        }
     } else {
-        $errorMessage = "Error al añadir el producto.";
+        $errorMessage = "Debe seleccionar una imagen para el producto.";
     }
 }
 
-// Listar productos
 $sql = "SELECT * FROM PRODUCTO";
 $result = $conn->query($sql);
 ?>
@@ -50,12 +61,13 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionar Productos</title>
+    <link rel="stylesheet" href="../assets/css/gestion-productos.css">
 </head>
 <body>
     <h1>Gestionar Productos</h1>
     
     <h2>Añadir Producto</h2>
-    <form method="post" action="gestion-productos.php">
+    <form method="post" action="gestion-productos.php" enctype="multipart/form-data">
         <label>Nombre:</label><br>
         <input type="text" name="nombreProducto" required><br>
         <label>Marca:</label><br>
@@ -74,10 +86,8 @@ $result = $conn->query($sql);
         <input type="number" name="precioUnitario" step="0.01" required><br>
         <label>Stock:</label><br>
         <input type="number" name="stock" required><br>
-        <div class="form-group">
-        <label for="imagen">Imagen:</label>
-        <input type="text" name="imagen" id="imagen" value="../assets/images/productos/.jpg" required>
-        </div>
+        <label>Imagen:</label><br>
+        <input type="file" name="imagen" required><br>
         <input type="submit" name="add_product" value="Añadir Producto">
     </form>
 
@@ -94,6 +104,7 @@ $result = $conn->query($sql);
             <th>Descripción</th>
             <th>Precio</th>
             <th>Stock</th>
+            <th>Imagen</th>
             <th>Acciones</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
@@ -105,6 +116,7 @@ $result = $conn->query($sql);
                 <td><?php echo $row['descripcion']; ?></td>
                 <td><?php echo $row['precioUnitario']; ?></td>
                 <td><?php echo $row['stock']; ?></td>
+                <td><img src="<?php echo $row['imagen']; ?>" alt="Imagen del producto" width="80"></td>
                 <td>
                     <a href="edit_product.php?id=<?php echo $row['idProducto']; ?>">Editar</a>
                     <a href="delete_product.php?id=<?php echo $row['idProducto']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
@@ -114,3 +126,7 @@ $result = $conn->query($sql);
     </table>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>

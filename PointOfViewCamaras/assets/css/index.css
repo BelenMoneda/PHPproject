@@ -10,7 +10,6 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
-    padding: 0 20px;
 }
 
 
@@ -42,9 +41,9 @@ video {
 
 .productos {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Cuatro columnas */
+    grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
-    padding: 20px 0;
+    padding: 20px 20px;
 }
 
 
@@ -70,10 +69,11 @@ video {
 }
 
 .producto img {
-    max-width: 100%;
-    height: auto;
+    width: 100%; 
+    height: auto; 
+    max-height:250px; 
     border-radius: 8px;
-}
+}  
 
 
 .producto h4 {

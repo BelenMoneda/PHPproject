@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SESSION['idRol'] != 1) {
-    header("Location: ../public/login.php");
+    header("Location: ../public/index.php");
     exit(); 
 }
 

@@ -50,7 +50,7 @@ $result = $conn->query($sql);
                 echo "<form method='GET' action='detalle_producto.php' style='cursor: pointer;'>"; 
                 echo "<input type='hidden' name='idProducto' value='" . $row['idProducto'] . "'>";
                 echo "<button type='submit' style='border: none; background: none; width: 100%; padding: 0; text-align: left;'>"; 
-                echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . "' style='width: 100%; height: auto; border-radius: 8px;'>";
+                echo "<img src='" . $row['imagen'] . "' alt='" . $row['nombreProducto'] . ">";
                 echo "<h4 style='margin: 10px 0;'>" . $row['nombreProducto'] . "</h4>";
                 echo "<p style='color: #555;'>Precio: $" . $row['precioUnitario'] . "</p>";
                 echo "</button>";

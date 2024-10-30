@@ -16,11 +16,11 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-if (isset($_GET['id'])) {
-    $idProducto = $_GET['id'];
+if (isset($_GET['idProducto'])) {
+    $idProducto = $_GET['idProducto'];
 
     // Eliminar el producto
-    $sql = "DELETE FROM PRODUCTO WHERE idProducto = ?";
+    $sql = "DELETE FROM PRODUCTO WHERE idProducto = '$idProducto'";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idProducto);
     
