@@ -85,11 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_product'])) {
         <label>Precio Unitario:</label><br>
         <input type="number" name="precioUnitario" value="<?php echo $producto['precioUnitario']; ?>" step="0.01" required><br>
         <label>Stock:</label><br>
-        <input type="number" name="stock" value="<?php echo $producto['stock']; ?>" required><br>
-        <div class="form-group">
-            <label for="imagen">Imagen:</label>
-            <input type="text" name="imagen" id="imagen" value="../assets/images/productos/.jpg" required>
-        </div>
+        <td><img src="<?php echo $row['imagen']; ?>" alt="Imagen del producto" width="80"></td>
         <input type="submit" name="edit_product" value="Actualizar Producto">
     </form>
 

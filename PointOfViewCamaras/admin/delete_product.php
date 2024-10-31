@@ -10,22 +10,20 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-if (isset($_GET['idProducto'])) {
-    $idProducto = $_GET['idProducto'];
+if (isset($_GET['id'])) {
+    $idProducto = $_GET['id'];
 
-    // Eliminar el producto
-    $sql = "DELETE FROM PRODUCTO WHERE idProducto = '$idProducto'";
+    $sql = "DELETE FROM PRODUCTO WHERE idProducto = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idProducto);
     
     if ($stmt->execute()) {
-        header("Location: gestion-productos.php"); // Redirigir después de eliminar
+        header("Location: gestion-productos.php"); 
         exit();
     } else {
         die("Error al eliminar el producto.");

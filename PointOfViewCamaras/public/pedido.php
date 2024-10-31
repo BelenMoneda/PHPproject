@@ -41,7 +41,7 @@ if (isset($_POST['completarPedido'])) {
     if (empty($nombreUsuario) || empty($apellidos) || empty($email)) {
         $error = "Por favor, completa todos los campos requeridos.";
     } else {
-        // Actualizar la tabla PEDIDO con los datos proporcionados por el usuario
+        
         $sqlUpdatePedido = "UPDATE PEDIDO 
                             SET nombreUsuario='$nombreUsuario', apellidos='$apellidos', email='$email', direccion='$direccion', 
                                 estadoPedido='$estadoPedido', fechaPedido='$fechaPedido', estadoPago='$estadoPago' 
@@ -56,7 +56,7 @@ if (isset($_POST['completarPedido'])) {
     }
 }
 
-// Obtener la información del pedido y el total
+
 $sqlPedido = "SELECT precioTotal FROM PEDIDO WHERE idPedido='$idPedido' AND idUsuario='$idUsuario'";
 $resultPedido = $conn->query($sqlPedido);
 
@@ -67,7 +67,7 @@ if ($resultPedido->num_rows > 0) {
     die("No se encontró el pedido.");
 }
 
-// Obtener los productos del pedido
+
 $sqlProductos = "SELECT LP.idProducto, P.nombreProducto, LP.cantidad, LP.precioUnitario, LP.subtotal 
                  FROM LINEA_PEDIDO LP 
                  JOIN PRODUCTO P ON LP.idProducto = P.idProducto 
