@@ -69,8 +69,8 @@ $result = $conn->query($sql);
                 <td><?php echo $row['idCategoria']; ?></td>
                 <td><?php echo $row['nombreCategoria']; ?></td>
                 <td>
-                    <a href="edit_categoria.php?id=<?php echo $row['idCategoria']; ?>">Editar</a>
-                    <a href="delete_categoria.php?id=<?php echo $row['idCategoria']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">Eliminar</a>
+                    <a href="editar-categoria.php?id=<?php echo $row['idCategoria']; ?>">Editar</a>
+                    <a href="eliminar-categoria.php?id=<?php echo $row['idCategoria']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">Eliminar</a>
                 </td>
             </tr>
         <?php endwhile; ?>

@@ -1,5 +1,5 @@
 <?php
-    $errorMessage = "";  // Variable para almacenar el mensaje de error
+    $errorMessage = ""; 
 
     if($_SERVER['REQUEST_METHOD'] == "POST")
     {

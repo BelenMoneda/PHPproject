@@ -118,8 +118,8 @@ $result = $conn->query($sql);
                 <td><?php echo $row['stock']; ?></td>
                 <td><img src="<?php echo $row['imagen']; ?>" alt="Imagen del producto" width="80"></td>
                 <td>
-                    <a href="edit_product.php?id=<?php echo $row['idProducto']; ?>">Editar</a>
-                    <a href="delete_product.php?id=<?php echo $row['idProducto']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
+                    <a href="editar-producto.php?id=<?php echo $row['idProducto']; ?>">Editar</a>
+                    <a href="eliminar-producto.php?id=<?php echo $row['idProducto']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Eliminar</a>
                 </td>
             </tr>
         <?php endwhile; ?>

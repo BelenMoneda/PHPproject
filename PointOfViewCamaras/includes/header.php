@@ -14,16 +14,28 @@
         <a href="index.php">
             <img id="logo" src="../assets/images/logo/logo.jpg" alt="logo" ></img>
         </a>
-
         <nav>
             <ul>
                 <li><a href="index.php">Inicio</a></li>
-                <li><a href="registro.php">Registrarse</a></li>
                 <li><a href="productos.php">Productos</a></li>
+                <li><a href="registro.php">Registrarse</a></li>
+                <?php if(isset($_SESSION['nombreUsuario'])): ?>
+                    <li class="dropdown">
+                        <a href="" class="dropbtn"><?php echo $_SESSION['nombreUsuario']; ?></a>
+                        <div class="dropdown-content">
+                            <a href="editarPerfil.php">Configuracion</a>
+                            <a href="login-destroy.php">Logout</a>
+                        </div>
+                    </li>
+                <?php else: ?>
+                    <li class="dropdown">
+                        <a href=" " class="dropbtn">Perfil</a>
+                        <div class="dropdown-content">
+                            <a href="login.php">Login</a>
+                        </div>
+                    </li>
+                <?php endif; ?>
                 <li><a href="carrito.php">Carrito</a></li>
-                <li><a href="perfil.php">Perfil</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li><a href="login-destroy.php">Logout</a></li>
             </ul>
         </nav> 
     </div>

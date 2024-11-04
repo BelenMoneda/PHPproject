@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_category'])) {
 <body>
     <h1>Editar Categoría</h1>
     
-    <form method="post" action="edit_categoria.php?id=<?php echo $idCategoria; ?>">
+    <form method="post" action="editar-categoria.php?id=<?php echo $idCategoria; ?>">
         <label>Nombre de la Categoría:</label><br>
         <input type="text" name="nombreCategoria" value="<?php echo $categoria['nombreCategoria']; ?>" required><br>
         <input type="submit" name="edit_category" value="Actualizar Categoría">

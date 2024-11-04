@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
 }
 
 // Editar producto
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_product'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
     $nombreProducto = $_POST['nombreProducto'];
     $marca = $_POST['marca'];
     $modelo = $_POST['modelo'];
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_product'])) {
 <body>
     <h1>Editar Producto</h1>
     
-    <form method="post" action="edit_product.php?id=<?php echo $idProducto; ?>">
+    <form method="post" action="editar-producto.php?id=<?php echo $idProducto; ?>">
         <label>Nombre:</label><br>
         <input type="text" name="nombreProducto" value="<?php echo $producto['nombreProducto']; ?>" required><br>
         <label>Marca:</label><br>
@@ -85,8 +85,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_product'])) {
         <label>Precio Unitario:</label><br>
         <input type="number" name="precioUnitario" value="<?php echo $producto['precioUnitario']; ?>" step="0.01" required><br>
         <label>Stock:</label><br>
+        <input type="number" name="stock" value="<?php echo $producto['stock']; ?>" required><br>
         <td><img src="<?php echo $row['imagen']; ?>" alt="Imagen del producto" width="80"></td>
-        <input type="submit" name="edit_product" value="Actualizar Producto">
+        <input type="submit" name="editar-producto" value="Actualizar Producto">
     </form>
 
     <?php if (isset($errorMessage)) echo "<p>$errorMessage</p>"; ?>
