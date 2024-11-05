@@ -23,8 +23,9 @@
                     <li class="dropdown">
                         <a href="" class="dropbtn"><?php echo $_SESSION['nombreUsuario']; ?></a>
                         <div class="dropdown-content">
-                            <a href="editarPerfil.php">Configuracion</a>
-                            <a href="login-destroy.php">Logout</a>
+                            <a href="editarPerfil.php">Editar perfil</a>
+                            <a href="misPedidos.php">Mis pedidos</a>
+                            <a href="login-destroy.php">Cerrar sesion</a>
                         </div>
                     </li>
                 <?php else: ?>

@@ -69,7 +69,7 @@ $result = $conn->query($sql);
 <body>
 <?php include '../includes/header.php'; ?>
 
-    <form method="GET" action="productos.php">
+    <form method="GET" action="productos.php" class="filtros">
         <label for="categoria">Categoría:</label>
         <select name="categoria" id="categoria">
             <option value="">Todas</option>

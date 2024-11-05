@@ -10,7 +10,6 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
@@ -19,7 +18,6 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $idProducto = $_GET['id'];
 
-    // Obtener los datos del producto
     $sql = "SELECT * FROM PRODUCTO WHERE idProducto = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idProducto);
@@ -42,14 +40,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
     $idCategoria = $_POST['idCategoria'];
     $precioUnitario = $_POST['precioUnitario'];
     $stock = $_POST['stock'];
-    $imagen = $_POST['imagen']; // Suponiendo que se maneja el archivo adecuadamente
+    
+    // Procesar la imagen cargada
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+        $nombreImagen = basename($_FILES["imagen"]["name"]);
+        $rutaDestino = "../assets/images/productos/" . $nombreImagen;
+        
+        // Mover la imagen a la carpeta destino
+        if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaDestino)) {
+            // Guardar la ruta de la imagen en la base de datos
+            $imagen = $rutaDestino;
+        } else {
+            $errorMessage = "Error al subir la imagen.";
+        }
+    } else {
+        $imagen = $producto['imagen']; // Mantener la imagen actual si no se sube una nueva
+    }
 
     $sql = "UPDATE PRODUCTO SET nombreProducto=?, marca=?, modelo=?, descripcion=?, idCategoria=?, precioUnitario=?, stock=?, imagen=? WHERE idProducto=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssiidsi", $nombreProducto, $marca, $modelo, $descripcion, $idCategoria, $precioUnitario, $stock, $imagen, $idProducto);
     
     if ($stmt->execute()) {
-        header("Location: gestion-productos.php"); // Redirigir después de editar
+        header("Location: gestion-productos.php"); 
         exit();
     } else {
         $errorMessage = "Error al actualizar el producto.";
@@ -64,11 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto</title>
+    <link rel="stylesheet" href="../assets/css/editar-producto.css">
+
 </head>
 <body>
-    <h1>Editar Producto</h1>
-    
-    <form method="post" action="editar-producto.php?id=<?php echo $idProducto; ?>">
+    <form method="post" action="editar-producto.php?id=<?php echo $idProducto; ?>" enctype="multipart/form-data">
         <label>Nombre:</label><br>
         <input type="text" name="nombreProducto" value="<?php echo $producto['nombreProducto']; ?>" required><br>
         <label>Marca:</label><br>
@@ -86,7 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
         <input type="number" name="precioUnitario" value="<?php echo $producto['precioUnitario']; ?>" step="0.01" required><br>
         <label>Stock:</label><br>
         <input type="number" name="stock" value="<?php echo $producto['stock']; ?>" required><br>
-        <td><img src="<?php echo $row['imagen']; ?>" alt="Imagen del producto" width="80"></td>
+        <label>Imagen:</label><br>
+        <input type="file" name="imagen"><br>
+        <td><img src="<?php echo $producto['imagen']; ?>" alt="Imagen del producto" width="80"></td>
         <input type="submit" name="editar-producto" value="Actualizar Producto">
     </form>
 

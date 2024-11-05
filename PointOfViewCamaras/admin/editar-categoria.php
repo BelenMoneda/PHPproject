@@ -10,7 +10,6 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
@@ -19,7 +18,7 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $idCategoria = $_GET['id'];
 
-    // Obtener los datos de la categoría
+
     $sql = "SELECT * FROM CATEGORIA WHERE idCategoria = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idCategoria);
@@ -33,7 +32,7 @@ if (isset($_GET['id'])) {
     $categoria = $result->fetch_assoc();
 }
 
-// Editar categoría
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_category'])) {
     $nombreCategoria = $_POST['nombreCategoria'];
 
@@ -42,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_category'])) {
     $stmt->bind_param("si", $nombreCategoria, $idCategoria);
     
     if ($stmt->execute()) {
-        header("Location: gestion-categorias.php"); // Redirigir después de editar
+        header("Location: gestion-categorias.php"); 
         exit();
     } else {
         $errorMessage = "Error al actualizar la categoría.";
@@ -56,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_category'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/editar-categoria.css">
     <title>Editar Categoría</title>
 </head>
 <body>

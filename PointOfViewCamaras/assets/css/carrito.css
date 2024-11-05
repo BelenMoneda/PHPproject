@@ -73,7 +73,7 @@ body {
 button[type="submit"], button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color:  #555;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -84,13 +84,13 @@ button[type="submit"], button {
 }
 
 button[type="submit"]:hover, button:hover {
-    background-color: #218838;
+    background-color:  #555555a2;
 }
 
 button[type="button"] {
-    background-color: #007bff;
+    background-color:  #555;
 }
 
 button[type="button"]:hover {
-    background-color: #0056b3;
+    background-color: #555;
 }
