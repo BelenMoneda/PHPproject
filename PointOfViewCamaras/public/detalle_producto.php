@@ -1,4 +1,6 @@
 <?php
+include '../includes/funciones/continuarSession.php'; 
+
 if(isset($_GET['idProducto'])) {
     $productoConsultado = $_GET['idProducto'];
     $servername = "localhost";

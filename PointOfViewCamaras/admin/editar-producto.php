@@ -1,5 +1,6 @@
 <?php
-session_start();
+include '../includes/funciones/sessionStart.php';
+
 if ($_SESSION['idRol'] != 1) {
     header("Location: index.php");
     exit();
@@ -31,7 +32,6 @@ if (isset($_GET['id'])) {
     $producto = $result->fetch_assoc();
 }
 
-// Editar producto
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
     $nombreProducto = $_POST['nombreProducto'];
     $marca = $_POST['marca'];
@@ -101,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editar-producto'])) {
         <input type="number" name="stock" value="<?php echo $producto['stock']; ?>" required><br>
         <label>Imagen:</label><br>
         <input type="file" name="imagen"><br>
-        <td><img src="<?php echo $producto['imagen']; ?>" alt="Imagen del producto" width="80"></td>
         <input type="submit" name="editar-producto" value="Actualizar Producto">
     </form>
 

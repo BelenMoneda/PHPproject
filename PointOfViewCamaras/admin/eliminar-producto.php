@@ -1,5 +1,7 @@
 <?php
-session_start();
+
+include '../includes/funciones/sessionStart.php';
+
 if ($_SESSION['idRol'] != 1) {
     header("Location: index.php");
     exit();

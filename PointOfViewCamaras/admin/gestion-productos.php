@@ -1,5 +1,6 @@
 <?php
-session_start();
+include '../includes/funciones/sessionStart.php';
+
 if ($_SESSION['idRol'] != 1) {
     header("Location: index.php");
     exit();
@@ -64,7 +65,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="../assets/css/gestion-productos.css">
 </head>
 <body>
-    <h1>Gestionar Productos</h1>
+    <h1>Gestion de Productos</h1>
     
     <h2>Añadir Producto</h2>
     <form method="post" action="gestion-productos.php" enctype="multipart/form-data">
@@ -94,7 +95,7 @@ $result = $conn->query($sql);
     <?php if (isset($successMessage)) echo "<p>$successMessage</p>"; ?>
     <?php if (isset($errorMessage)) echo "<p>$errorMessage</p>"; ?>
 
-    <h2>Lista de Productos</h2>
+    <h2>Editar o Eliminar Productos</h2>
     <table border="1">
         <tr>
             <th>ID</th>

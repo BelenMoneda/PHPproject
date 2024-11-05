@@ -1,5 +1,6 @@
 <?php 
-session_start();
+include '../includes/funciones/sessionStart.php';
+
 if ($_SESSION['idRol'] != 1) {
     header("Location: index.php");
     exit();
@@ -10,13 +11,13 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Añadir categoría
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
     $nombreCategoria = $_POST['nombreCategoria'];
 
@@ -31,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
     }
 }
 
-// Listar categorías
+
 $sql = "SELECT * FROM CATEGORIA";
 $result = $conn->query($sql);
 
@@ -58,7 +59,7 @@ $result = $conn->query($sql);
     <?php if (isset($successMessage)) echo "<p>$successMessage</p>"; ?>
     <?php if (isset($errorMessage)) echo "<p>$errorMessage</p>"; ?>
 
-    <h2>Lista de Categorías</h2>
+    <h2>Editar o Eliminar Categoria</h2>
     <table border="1">
         <tr>
             <th>ID</th>

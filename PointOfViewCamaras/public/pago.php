@@ -6,17 +6,17 @@ $username = "root";
 $password = "";
 $dbname = "povcamaras";
 
-// Conexión a la base de datos
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Verificamos si se ha enviado el pedido para realizar el pago
+
 if (isset($_GET['idPedido'])) {
     $idPedido = $_GET['idPedido'];
 
-    // Obtener el precio total del pedido
+
     $sqlPrecio = "SELECT precioTotal FROM PEDIDO WHERE idPedido='$idPedido'";
     $resultPrecio = $conn->query($sqlPrecio);
 
@@ -27,22 +27,22 @@ if (isset($_GET['idPedido'])) {
         die("No se encontró el pedido.");
     }
 
-    // Verificamos si se ha enviado el formulario de pago
+
     if (isset($_POST['realizarPago'])) {
         $idMetodoPago = $_POST['metodoPago'];
         $estadoPago = "Pagado";
-        $fechaPago = date("Y-m-d"); // Fecha actual
+        $fechaPago = date("Y-m-d"); 
 
-        // Insertar el pago en la tabla Pago
+
         $sqlInsertPago = "INSERT INTO Pago (idPedido, idMetodoPago, monto, estadoPago, fechaPago) 
                           VALUES ('$idPedido', '$idMetodoPago', '$monto', '$estadoPago', '$fechaPago')";
 
         if ($conn->query($sqlInsertPago) === TRUE) {
-            // Actualizar el estado del pedido a "finalizado"
+            
             $sqlUpdatePedido = "UPDATE PEDIDO SET estadoPedido='finalizado', estadoPago='$estadoPago' WHERE idPedido='$idPedido'";
             $conn->query($sqlUpdatePedido);
 
-            // Actualizar el stock de los productos
+            
             $sqlProductos = "SELECT idProducto, cantidad FROM LINEA_PEDIDO WHERE idPedido='$idPedido'";
             $resultProductos = $conn->query($sqlProductos);
 
@@ -51,7 +51,7 @@ if (isset($_GET['idPedido'])) {
                     $idProducto = $rowProducto['idProducto'];
                     $cantidad = $rowProducto['cantidad'];
 
-                    // Actualizar el stock en la tabla Producto
+                    
                     $sqlUpdateStock = "UPDATE PRODUCTO SET stock = stock - $cantidad WHERE idProducto = '$idProducto'";
                     $conn->query($sqlUpdateStock);
                 }
@@ -67,7 +67,7 @@ if (isset($_GET['idPedido'])) {
     die("ID del pedido no proporcionado.");
 }
 
-// Obtener métodos de pago disponibles
+
 $sqlMetodosPago = "SELECT * FROM MetodoPago";
 $resultMetodosPago = $conn->query($sqlMetodosPago);
 
