@@ -1,13 +1,6 @@
-<!-- 1. Consulta de productos:
-o Los usuarios podrán consultar los productos disponibles en la tienda.
-o Los productos deben mostrarse con al menos: nombre, descripción,
-precio, imagen y stock disponible.
-2. Consulta de productos filtrados:
-o Permitir a los usuarios buscar productos por distintas categorías
-(ejemplo: ropa, electrónica), rango de precios, nombre y otras
-características según el tipo de tienda. -->
 <?php
-// conexión a la base de datos
+include '../includes/funciones/continuarSession.php';
+
 $host = 'localhost'; // Cambia por tu host si es diferente
 $db = 'POVCamaras';  // Nombre de tu base de datos
 $user = 'root';      // Usuario de la base de datos
@@ -67,7 +60,7 @@ $result = $conn->query($sql);
 
 </head>
 <body>
-<?php include '../includes/header.php'; ?>
+    <?php include '../includes/header.php'; ?>
 
     <form method="GET" action="productos.php" class="filtros">
         <label for="categoria">Categoría:</label>
