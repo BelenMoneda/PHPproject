@@ -118,15 +118,15 @@ INSERT INTO CATEGORIA VALUES ('','Cámaras'),('','Accesorios');
 
 INSERT INTO PRODUCTO (idProducto, nombreProducto, marca, modelo, descripcion, idCategoria, precioUnitario, stock, imagen) VALUES
 ('', 'EOS R8', 'CANON', 'Cámara Mirrorless Body', 'Conectividad: Wi-Fi y Bluetooth para transferencia de imágenes y disparo remoto desde tu smartphone o tablet.', '1', 1400, 2, '../assets/images/productos/1.jpg'),
-('', 'EOS R6', 'CANON', 'Cámara Mirrorless Full-Frame', 'Estabilización de imagen en el cuerpo, sensor CMOS de 20 MP, video 4K UHD.', '1', 2500, 3, '../assets/images/productos/1.jpg'),
-('', 'Alpha 7 IV', 'SONY', 'Cámara Mirrorless Full-Frame', 'Sensor Exmor R CMOS de 33 MP, procesador BIONZ XR, video 4K 60p.', '1', 2800, 4, '../assets/images/productos/1.jpg'),
-('', 'Z6 II', 'NIKON', 'Cámara Mirrorless Full-Frame', 'Sensor CMOS de 24.5 MP, Dual EXPEED 6, 4K UHD.', '1', 2000, 5, '../assets/images/productos/1.jpg'),
-('', 'Lumix S5', 'PANASONIC', 'Cámara Mirrorless Full-Frame', '24 MP, grabación de video 4K, diseño compacto y ligero.', '1', 1700, 6, '../assets/images/productos/1.jpg'),
-('', 'X-T5', 'FUJIFILM', 'Cámara Mirrorless APS-C', '40 MP, video 6.2K, estabilización de imagen en el cuerpo (IBIS).', '1', 1900, 3, '../assets/images/productos/1.jpg'),
-('', 'EOS M50 Mark II', 'CANON', 'Cámara Mirrorless APS-C', 'Sensor CMOS APS-C de 24.1 MP, video 4K, pantalla táctil abatible.', '1', 600, 10, '../assets/images/productos/1.jpg'),
+('', 'EOS R6', 'CANON', 'Cámara Mirrorless Full-Frame', 'Estabilización de imagen en el cuerpo, sensor CMOS de 20 MP, video 4K UHD.', '1', 2500, 3, '../assets/images/productos/2.jpg'),
+('', 'Alpha 7 IV', 'SONY', 'Cámara Mirrorless Full-Frame', 'Sensor Exmor R CMOS de 33 MP, procesador BIONZ XR, video 4K 60p.', '1', 2800, 4, '../assets/images/productos/3.jpg'),
+('', 'Z6 II', 'NIKON', 'Cámara Mirrorless Full-Frame', 'Sensor CMOS de 24.5 MP, Dual EXPEED 6, 4K UHD.', '1', 2000, 5, '../assets/images/productos/4.jpg'),
+('', 'Lumix S5', 'PANASONIC', 'Cámara Mirrorless Full-Frame', '24 MP, grabación de video 4K, diseño compacto y ligero.', '1', 1700, 6, '../assets/images/productos/5.jpg'),
+('', 'X-T5', 'FUJIFILM', 'Cámara Mirrorless APS-C', '40 MP, video 6.2K, estabilización de imagen en el cuerpo (IBIS).', '1', 1900, 3, '../assets/images/productos/6.jpg'),
+('', 'EOS M50 Mark II', 'CANON', 'Cámara Mirrorless APS-C', 'Sensor CMOS APS-C de 24.1 MP, video 4K, pantalla táctil abatible.', '1', 600, 10, '../assets/images/productos/7.jpg'),
 ('', 'Alpha 6400', 'SONY', 'Cámara Mirrorless APS-C', 'Sensor CMOS de 24.2 MP, video 4K HDR, Eye AF en tiempo real.', '1', 900, 8, '../assets/images/productos/1.jpg'),
 ('', 'Z50', 'NIKON', 'Cámara Mirrorless APS-C', '20.9 MP, video 4K, pantalla abatible para vlogging.', '1', 850, 5, '../assets/images/productos/1.jpg'),
-('', 'GFX 100S', 'FUJIFILM', 'Cámara Mirrorless Medio Formato', '102 MP, estabilización en el cuerpo, video 4K.', '1', 6000, 2, '../assets/images/productos/1.jpg'),
+('', 'GFX 100S', 'FUJIFILM', 'Cámara Mirrorless Medio Formato', '102 MP, estabilización en el cuerpo, video 4K.', '1', 6000, 2, '../assets/images/productos/8.jpg'),
 ('', 'OM-D E-M1 Mark III', 'OLYMPUS', 'Cámara Mirrorless Micro Cuatro Tercios', '20 MP, estabilización de imagen de 5 ejes, video 4K.', '1', 1500, 4, '../assets/images/productos/1.jpg'),
 
 ('', 'Mavic Air 2', 'DJI', 'Dron con Cámara 4K', 'Capaz de grabar video 4K, con modos de vuelo inteligentes y control remoto.', '2', 800, 6, '../assets/images/productos/1.jpg'),
